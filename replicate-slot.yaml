@@ -1,0 +1,71 @@
+trigger:
+- main
+
+variables:
+  azureSubscription: 'c1227b3c-e101-49a1-9a70-855ce39da6f0'
+  resourceGroup: 'rg-iml-apps-df-uks-001'
+  webAppName: 'iml-app-df'
+  sourceSlot: 'dev'
+  targetSlot: 'sit'
+
+stages:
+- stage: DeployContainerToTargetSlot
+  jobs:
+  - job: DeployImage
+    displayName: 'Copy container image settings from source to target slot'
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    steps:
+    - task: AzureCLI@2
+      displayName: 'Get source slot container config and update target slot'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          echo "Fetching container image config from $(sourceSlot) slot..."
+          containerSettings=$(az webapp config container show \
+            --name $(webAppName) \
+            --resource-group $(resourceGroup) \
+            --slot $(sourceSlot) \
+            --query "{image:dockerCustomImageName,registry:dockerRegistryUrl,username:dockerRegistryUsername,password:dockerRegistryPassword}" \
+            --output json)
+
+          image=$(echo $containerSettings | jq -r .image)
+          registry=$(echo $containerSettings | jq -r .registry)
+          username=$(echo $containerSettings | jq -r .username)
+          password=$(echo $containerSettings | jq -r .password)
+
+          # Extract image version (tag) from image string
+          imageTag="${image##*:}"
+
+          echo "##vso[task.setvariable variable=imageVersion;isOutput=true]$imageTag"
+
+          echo "Applying container config to $(targetSlot) slot..."
+          az webapp config container set \
+            --name $(webAppName) \
+            --resource-group $(resourceGroup) \
+            --slot $(targetSlot) \
+            --docker-custom-image-name "$image" \
+            --docker-registry-server-url "$registry" \
+            --docker-registry-server-user "$username" \
+            --docker-registry-server-password "$password"
+
+    - task: AzureCLI@2
+      displayName: 'Restart target slot'
+      inputs:
+        azureSubscription: $(azureSubscription)
+        scriptType: bash
+        scriptLocation: inlineScript
+        inlineScript: |
+          echo "Restarting $(targetSlot) slot..."
+          az webapp restart \
+            --name $(webAppName) \
+            --resource-group $(resourceGroup) \
+            --slot $(targetSlot)
+
+    - script: |
+        echo "✅ Deployed container image version: $(imageVersion)"
+        echo "##vso[task.complete result=Succeeded;]Deployed image version: $(imageVersion)"
+      displayName: 'Show deployed image version'

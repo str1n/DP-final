@@ -1,0 +1,149 @@
+# Docker
+# Build and run unit tests in a temp container then build and push an image to Azure Container Registry
+# Then deploy to a web app slot
+# https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+
+trigger: none
+#- main
+    
+variables:
+  # Container registry service connection established during pipeline creation
+  #acrARMServiceConnection: '8d3ee274-2961-487f-b567-24f6d069b823' # scn-acr-docfactory-uks-001
+  dockerRegistryServiceConnection: '602ca23a-c7b4-4e1f-a443-6915b2dbd0b8' # IMLAppsRegisty
+  azureRMServiceConnection: 'c1227b3c-e101-49a1-9a70-855ce39da6f0' # scn-docfactory-uks-001
+  resourceGroup: 'rg-iml-apps-df-uks-001'
+  baseRepository: 'iml-df-base'
+  imageRepository: 'imlappsdf'
+  containerRegistry: 'imlappsregistry.azurecr.io'
+  releaseDockerfile: '$(Build.SourcesDirectory)/DF.Dockerfile'
+  testDockerfile: '$(Build.SourcesDirectory)/test.Dockerfile'
+  testContainerName: 'test-container5'
+  tag: '$(Build.BuildId)'
+  vmImageName: 'ubuntu-latest'
+
+resources:
+  repositories:
+  - repository: self
+
+stages:
+
+#- stage: UnitTests
+#  displayName: Build test container and run unit tests
+#  jobs:
+#  - job: BuildAndTest
+#    displayName: Run unit tests
+#    pool:
+#      name: 'shap-iml-applications-uks-001'
+#      vmImage: $(vmImageName)
+#    steps:
+#    - checkout: self
+
+#    - task: Docker@2
+#      displayName: Login to ACR
+#      inputs:
+#        command: login
+#        containerRegistry: $(dockerRegistryServiceConnection)
+
+##    - script: |
+##        echo "Stopping and removing previous containers..."
+##        docker stop test-container
+##        docker stop test-container1
+##        docker stop test-container2
+##        docker stop test-container3
+##        docker stop test-container4
+
+#    - script: |
+#        echo "Building Docker image from Git..."
+#        docker build -f $(testDockerfile) -t $(testContainerName):$(tag) .
+#      displayName: 'Build Docker Image' 
+
+#    - script: |
+#        echo "Starting test container..."
+#        echo "STORAGE_CONNECTION_STRING=$(STORAGE_CONNECTION_STRING)" > envfile
+#        echo "OUTPUT_BLOB_CONTAINER=docfactorydev" >> envfile
+#        docker run -d --rm --name $(testContainerName) --env-file envfile $(testContainerName):$(tag) tail -f /dev/null
+#      displayName: 'Start Test Container'
+
+#    - powershell: |
+#        docker ps -a
+
+#    - task: PowerShell@2
+#      displayName: Running tests
+#      inputs:
+#        targetType: 'inline'
+#        script: |
+#          docker exec $(testContainerName) pytest /code/app/test_main.py --junitxml=/test-results.xml
+
+#    - script: |
+#        echo "Copying test results from container..."
+#        docker cp $(testContainerName):/test-results.xml $(Build.SourcesDirectory)/test-results.xml
+#      displayName: 'Copy Test Results'
+
+#    - task: PublishTestResults@2
+#      displayName: Publish test results
+#      inputs:
+#        testResultsFiles: '$(Build.SourcesDirectory)/test-results.xml'
+#        testRunTitle: 'DocFactory Containerised Tests'
+
+#    - script: |
+#        echo "Stopping and removing the test container..."
+#        docker stop $(testContainerName)
+#      displayName: 'Stop & Remove Test Container'
+#      condition: always()  # Ensure the container stops even if tests fail
+
+#    - script: |
+#        echo "Tests passed successfully!"
+#      displayName: 'Confirm Tests Passed'
+
+- stage: Build
+#  dependsOn: UnitTests
+#  condition: succeeded()
+  displayName: Build and push to ACR
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: Docker@2
+      displayName: Login to ACR
+      inputs:
+        command: login
+        containerRegistry: $(dockerRegistryServiceConnection)
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(releaseDockerfile)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: $(tag)
+
+- stage: Deploy
+  displayName: Deploy to App Service
+  jobs:
+  - job: Deploy
+    displayName: Deploy to Dev
+    pool:
+      vmImage: 'ubuntu-latest'
+    steps:
+    - task: AzureRmWebAppDeployment@4
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: $(azureRMServiceConnection)
+        appType: 'webAppContainer'
+        WebAppName: 'iml-app-df'
+        DockerNamespace: $(containerRegistry)
+        DockerRepository: $(imageRepository)
+        DockerImageTag: $(tag)
+        deployToSlotOrASE: true
+        resourceGroupName: $(resourceGroup)
+        slotName: dev
+#    - task: AzureAppServiceManage@0
+#      inputs:
+#        azureSubscription: $(azureRMServiceConnection)
+#        appType: 'webAppContainer'
+#        WebAppName: 'iml-app-df'
+#        resourceGroupName: $(resourceGroup)
+#        SourceSlot: staging
+#        SwapWithProduction: true

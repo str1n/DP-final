@@ -1,0 +1,9 @@
+.venv
+.pytest_cache
+app\DF.Dockerfile
+app\alpine-weasyprint.Dockerfile
+app\esis.py
+app\templates\ESIS_template.html
+app\__pychache__
+app\__pycache__\*
+app\.pytest_cache

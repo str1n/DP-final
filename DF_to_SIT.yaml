@@ -1,0 +1,29 @@
+trigger: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  appName: 'iml-app-df'
+  slotName: 'sit'
+  containerRegistry: 'imlappsregistry.azurecr.io'
+  imageName: 'imlappsdf'
+  webAppName: 'iml-app-df'
+  serviceConnection: 'c1227b3c-e101-49a1-9a70-855ce39da6f0'
+  imageTag: '16901'
+
+stages:
+
+- stage: Deploy
+  displayName: Deploy to SIT
+  jobs:
+  - job: Deploy
+    displayName: Deploy to Web App Slot
+    steps:
+    - task: AzureWebAppContainer@1
+      displayName: Deploy ACR Image to Web App Slot
+      inputs:
+        azureSubscription: $(serviceConnection)
+        appName: $(webAppName)
+        slotName: $(slotName)
+        imageName: $(containerRegistry)/$(imageName):$(imageTag)
