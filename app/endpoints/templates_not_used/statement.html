@@ -1,0 +1,405 @@
+<!--
+    TEMPLATE NAME:  IML ANNUAL STATEMENT
+    TEMPLATE REFERENCE: IML STMT001 (05/25)
+-->
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+    <!-- For use with the weasyprint Python module -->
+    <meta charset="utf-8">
+    <meta name="author" content="Paul Strinati">
+    <!-- <link rel="stylesheet" type="text/css" href="|stylePath|" /> <!-- |stylePath| substitued in in main python script -->
+    <title>IML Statement Template</title>
+    <!-- Google Font for use in the template -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+        rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&family=Outfit:wght@100..900&display=swap"
+        rel="stylesheet">
+</head>
+<style type="text/css">
+    @page {
+        size: A4;
+        margin-top: 2cm;
+        margin-bottom: 4cm;
+        counter-increment: page;
+
+        @bottom-center {
+            content: element(footer);
+        }
+
+        @bottom-right-corner {
+            content: ' ' counter(page) "/" counter(pages);
+            font-size: 0.6em;
+            color: dimgray;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        @bottom-left-corner {
+            content: "IMLSTMT001(05/25)";
+            /* ENSURE THIS IS UPDATED IF THE TEMPLATE IS UPDATED! */
+            font-size: 0.5em;
+            color: dimgray;
+            transform: rotate(-90deg);
+            text-align: middle;
+            vertical-align: middle;
+        }
+    }
+
+    .page-break {
+        page-break-after: always;
+    }
+
+    footer {
+        position: running(footer);
+        /* height of the footer */
+        height: 4cm;
+    }
+
+    body {
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: "Outfit", serif;
+        font-style: normal;
+        font-size: 0.8em;
+    }
+
+    h1 {
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    h2 {
+        text-align: left;
+        font-weight: bold;
+        font-size: 1.1em;
+    }
+
+    .courier-prime-regular {
+        font-family: "Courier Prime", serif;
+        font-weight: 400;
+        font-style: normal;
+    }
+
+    .right-text {
+        text-align: right;
+    }
+
+    .centre-text {
+        text-align: center;
+    }
+
+    .left-text {
+        text-align: left;
+    }
+
+    .full-justify {
+        text-align: justify;
+        text-justify: inter-word;
+    }
+
+    p,
+    ul,
+    ol,
+    dl,
+    li,
+    dd,
+    dt,
+    address {
+        font-size: 1em;
+        font-family: "Outfit", serif;
+        font-style: normal;
+        line-height: 100%;
+    }
+
+    .invisible {
+        table-layout: fixed;
+        border-style: none;
+        border: 0px;
+        padding: 4px;
+        background-color: #ffffff;
+        line-height: 100%;
+    }
+
+    .invisible_auto {
+        table-layout: auto;
+        border-style: none;
+        border: 0px;
+        padding: 4px;
+        background-color: #ffffff;
+        line-height: 100%;
+    }
+
+    .fullwidth {
+        border-collapse: collapse;
+        padding: 0px;
+        line-height: 100%;
+        width: 100%;
+    }
+
+    table {
+        border-collapse: collapse;
+        border: 1px solid rgb(140, 140, 140);
+        padding: 4px;
+        line-height: 100%;
+    }
+
+    thead {
+        background-color: #19233C;
+        color: #ffffff;
+        text-align: left;
+    }
+
+    th,
+    td {
+        border: 1px solid rgb(160 160 160);
+        padding: 4px 5px;
+        text-align: left;
+        font-size: 1em;
+    }
+
+    tbody>tr>td:nth-of-type(3) {
+        text-align: right;
+        font-family: "Courier Prime", serif;
+        font-size: 1.1em;
+    }
+
+    tbody>tr>td:nth-of-type(4) {
+        text-align: right;
+        font-family: "Courier Prime", serif;
+        font-size: 1.1em;
+    }
+
+    tbody>tr:nth-of-type(even) {
+        background-color: #bcc3ef;
+    }
+</style>
+
+<body>
+    <!-- Footer content in separate HTML file, read in python and substituted in to allow single footer across multiple templates -->
+    |footerContent|
+    <!-- Main document content -->
+    <table class="invisible fullwidth">
+        <tr>
+            <td class="invisible">
+                <!-- Needs full path for image from the OS root, so this is retrieved in python and substituted in the below -->
+                <img src="|imagePath|" style="height: 100; width: 200; float:inline-start">
+            </td>
+            <td width="70%" class="invisible">
+                <p class="right-text">
+                    <br><br>
+                    <strong>Interbridge Mortgages Limited</strong><br>
+                    Coal House, Dumfries Place, Cardiff CF10 3RJ<br>
+                    <br><br>
+                    Telephone: 029 2254 0482<br>
+                    Email: customerservices@ib-mortgages.com
+                </p>
+            </td>
+        </tr>
+    </table>
+    <table class="invisible fullwidth">
+        <tr>
+            <td width="70%" class="invisible" data-testid="recipentNameAddress">
+                <p>
+                    <b>|salutation| |firstName| |familyName|</b><br>
+                    |recipientAddress|
+                </p>
+            </td>
+            <td width="30%" class="invisible" data-testid="documentGenerationDate">
+                <p class="right-text">|date|</p>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <h1 data-testid="documentHeader"><u>ANNUAL STATEMENT</u></h1>
+    <p data-testid="toRecipient">Dear |salutation| |familyName|,</p>
+    <p>Please find below your Annual Statement for your Loan agreement with Interbridge Mortgages.</p>
+    <table class="invisible fullwidth">
+        <tr>
+            <td width="60%" class="invisible"><b>Agreement Number:</b></td>
+            <td width="40%" class="invisible" data-testid="agreementId">|agreementId|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Repayment Method:</b></td>
+            <td width="40%" class="invisible" data-testid="repaymentMethod">|repaymentMethod|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Statement Period:</b></td>
+            <td width="40%" class="invisible" data-testid="statementPeriod">|statementPeriod|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Account Holder(s):</b></td>
+            <td width="40%" class="invisible" data-testid="accountHolder">|accountHolder|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Loan Secured on:</b></td>
+            <td width="40%" class="invisible" data-testid="securityAddress">|securityAddress|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Payment Shortfall:</b></td>
+            <td width="40%" class="invisible" data-testid="paymentShortfall">|paymentShortfall|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Outstanding Balance (including Accrued Interest) as at |date|:</b></td>
+            <td width="40%" class="invisible" data-testid="outstandingBalance">|outstandingBal|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Redemption Balance as at |date|:</b></td>
+            <td width="40%" class="invisible" data-testid="redemptionBalance">|redemptionBal|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Exit Fee:</b></td>
+            <td width="40%" class="invisible" data-testid="exitFee">|exitFee|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>Early Redemption Charge (ERC):</b></td>
+            <td width="40%" class="invisible" data-testid="erc">|erc|</td>
+        </tr>
+        <tr>
+            <td width="60%" class="invisible"><b>ERC End Date:</b></td>
+            <td width="40%" class="invisible" data-testid="ercEndDate">|ercEndDate|</td>
+        </tr>
+    </table>
+    <br>
+    <table class="fullwidth">
+        <thead>
+            <tr>
+                <th>Agreement Details</th>
+            </tr>
+        </thead>
+    </table>
+    <br>
+    <!-- tables within a table to avoid formatting of 4th cell in a single table -->
+    <table class="invisible fullwidth">
+        <tr>
+            <td width="50%" class="invisible">
+                <table class="invisible">
+                    <tr>
+                        <td width="70%" class="invisible"><b>Agreement Start Date:</b></td>
+                        <td width="25%" class="invisible" data-testid="agreementStartDate">|agreementStartDate|</td>
+                    </tr>
+                    <tr>
+                        <td width="70%" class="invisible"><b>Original Term (months):</b></td>
+                        <td width="25%" class="invisible" data-testid="originalTerm">|originalTerm|</td>
+                    </tr>
+                    <tr>
+                        <td width="70%" class="invisible"><b>Term Remaining (months):</b></td>
+                        <td width="25%" class="invisible" data-testid="termRemaining">|termRemaining|</td>
+                    </tr>
+                </table>
+            </td>
+            <td width="50%" class="invisible">
+                <table class="invisible">
+                    <tr>
+                        <td width="70%" class="invisible"><b>Mortgage Amount (inclusive of fees):</b></td>
+                        <td width="25%" class="invisible" data-testid="totalCredit">|totalCredit|</td>
+                    </tr>
+                    <tr>
+                        <td width="70%" class="invisible"><b>Total Amount of Fees:</b></td>
+                        <td width="25%" class="invisible" data-testid="totalFees">|totalFees|</td>
+                    </tr>
+                    <tr>
+                        <td width="70%" class="invisible"><b>Total Amount of Interest for Statement Period:</b></td>
+                        <td width="25%" class="invisible" data-testid="totalInterest">|totalInterest|</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <table class="fullwidth">
+        <thead>
+            <tr>
+                <th>Account Transactions for Statement Period</th>
+            </tr>
+        </thead>
+    </table>
+    <br>
+    <!-- tables within a table to avoid formatting of 4th cell in a single table -->
+    <table class="invisible fullwidth">
+        <tr>
+            <td width="50%" class="invisible">
+                <table class="invisible">
+                    <tr>
+                        <td width="70%" class="invisible"><b>Total Payments Due:</b></td>
+                        <td width="25%" class="invisible" data-testid="totalPaymentsDue">|totalPaymentsDue|</td>
+                    </tr>
+                    <tr>
+                        <td width="70%" class="invisible"><b>Total Arrears Charges:</b></td>
+                        <td width="25%" class="invisible" data-testid="totalArrearsCharges">|totalArrearsCharges|</td>
+                    </tr>
+                </table>
+            </td>
+            <td width="50%" class="invisible">
+                <table class="invisible">
+                    <tr>
+                        <td width="70%" class="invisible"><b>Total Payments Made:</b></td>
+                        <td width="25%" class="invisible" data-testid="totalPaymentsMade">|totalPaymentsMade|</td>
+                    </tr>
+                    <tr>
+                        <td width="70%" class="invisible"><b>Total Collection Charges:</b></td>
+                        <td width="25%" class="invisible" data-testid="totalCollectionCharges">|totalCollectionCharges|
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <div class="page-break"></div>
+    |transactionTable|
+    <br>
+    <p">During this period, interest was charged at the following rates:</p>
+        |interestTable|
+        <h2>Why is there additional interest on my statement?</h2>
+        <p class="full-justify">Where additional interest is shown on your statement, this relates to interest on
+            arrears and/or outstanding fees. Should you have arrears and/or fees balance, you will need to make
+            additional payments in excess of your normal monthly instalment to clear these and prevent additional
+            interest continuing to accrue. If you have not already done so, please contact us on <b>029 2254 0482</b> to
+            make arrangements concerning this. The sooner you are able to pay these arrears and/or outstanding fees, the
+            less interest that will accrue so we are keen to help you clear these off your account.</p>
+        <p class="full-justify">If you are having difficulties in making your monthly payments or if you have any
+            queries in relation to your statement, please contact us on <b>029 2254 0482</b>. We are here to help.</p>
+        <h2>Thinking of paying less than your agreed monthly payment?</h2>
+        <p class="full-justify">If you pay less than your agreed payment, in most cases it may cause you to be in
+            arrears and cost you more to pay off your loan.<br>
+        <p class="full-justify">If you have diffculties making payments under your loan agreement, please contact us if
+            you have not already done so to discuss how we can help. You may also want to seek advice on what to do from
+            an independent free advice agency such as the Citizens Advice Bureau.</p>
+        <h2>Want to overpay on your loan with us?</h2>
+        <p class="full-justify">You can make Overpayments at any time. You should aways contact us before making any
+            Overpayments so that we can provide guidance on how, considering your circumstances, the payment can be best
+            applied to give you the most benefit.</p>
+        <h2>Something not right on your statement?</h2>
+        <p class="full-justify">If you have spotted something on your statement you are not sure about, or think might
+            be incorrect, please give us a call and we will try to resolve your query.</p>
+        <p class="full-justify">We appreciate that sometimes we don't always get it right, but we would like the chance
+            to put it right for you. Please call us on <b>029 2254 0482</b>.</p>
+        <p class="full-justify">If you wish to make a complaint please visit the complaints section of our website
+            at:<br>https://www.interbridgemortgages.com/existing-customers/#complaints</p>
+        <h2>Other expenses:</h2>
+        <p class="full-justify">You may be liable for other reasonable expenses which we incur in connection with this
+            loan, for example any costs we incur to put right any obligations you have breached, any costs of
+            enforcement (such as legal or court fees) and any payments we make to third parties including to our agents
+            if we decide to take legal action.</p>
+        <br>
+        <br>
+        <p class="full-justify">Yours sincerely,</p>
+        <br>
+        <img src="|signaturePath|" style="height: 100; width: 200; float:inline-start">
+        <br>
+        <p class="full-justify">Interbridge Mortgages Limited</p>
+        <br>
+        <br>
+        <p class="centre-text"><b>YOUR HOME MAY BE AT RISK IF YOU DO NOT KEEP UP REPAYMENTS ON YOUR MORTGAGE OR ANY
+                OTHER LOAN SECURED AGAINST IT</b></p>
+        <br>
+</body>
+
+</html>
