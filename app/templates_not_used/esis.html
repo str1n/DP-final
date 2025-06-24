@@ -43,6 +43,7 @@
     body {
         max-width: 800px;
         margin: 0 auto;
+        font-size: 0.875em;
         font-family: "Outfit", serif;
         font-style: normal;
     }
@@ -69,7 +70,7 @@
     address {
         font-family: "Outfit", serif;
         font-style: normal;
-        font-size: 1em;
+        font-size: 0.875em;
         line-height: 100%;
     }
 
@@ -79,7 +80,7 @@
     li {
         font-family: "Outfit", serif;
         font-style: normal;
-        font-size: 1em;
+        font-size: 100%;
         line-height: 100%;
         padding: 0;
         margin-top: 0px;
@@ -102,7 +103,7 @@
         font-family: "Outfit", serif;
         font-style: normal;
         border-collapse: collapse;
-        border: 1px solid rgb(140, 140, 140);
+        border: 1px solid rgb(190, 190, 190);
         padding: 10px;
         line-height: 100%;
         page-break-inside: avoid;
@@ -116,20 +117,19 @@
         color: #000000;
         text-align: left;
         page-break-inside: avoid;
-        page-break-after: avoid;
+        display: table-header-group;
     }
 
     th,
     td {
         font-family: "Outfit", serif;
         font-style: normal;
-        font-size: 1em;
+        font-size: 0.875em;
         border: 1px solid rgb(160 160 160);
         padding: 10px;
         text-align: left;
         justify-content: normal;
         page-break-inside: avoid;
-        page-break-after: avoid;
     }
 </style>
 
@@ -142,13 +142,11 @@
     <p><b>The information below remains valid until |validDate|. After that date, it may change in line with market
             conditions.</b></p>
     <p>This document does not constitute an obligation for Interbridge Mortgages Limited to grant you a Loan.</p>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="1" type="1">
-                        <li><b>Lender</b></li>
-                    </ol>
+                    <b>1. Lender</b>
                 </th>
             </tr>
         </thead>
@@ -166,13 +164,11 @@
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="2" type="1">
-                        <li><strong>Credit Intermediary</strong></li>
-                    </ol>
+                    <b>2. Credit Intermediary</b>
                 </th>
             </tr>
         </thead>
@@ -205,30 +201,29 @@
             </tr>
             <tr>
                 <td width="100%" class="invisitable">
-                    {{subBroker}}|subBrokerName|, |subBrokerStreet|, |subBrokerCity|, |subBrokerPostcode|, |subBrokerWeb|, |subBrokerEmail|,
-                    |subBrokerPhone| recommends, having assessed your needs and circumstances, that you take out this second charge
-                    mortgage, which will be
-                    processed and referred to the lender by |brokerName|.
-                    <br><br>
-                    Our fee is described in section 4. In addition, if the proposed second charge mortgage completed, Interbridge Mortgages
-                    Limited will pay |brokerName| a commission of £|brokerCommission| for arranging your second charge mortgage with
-                    them and |subBrokerName| will also benefit from this payment. We recommend, having assessed your needs and
-                    circumstances, that you take out this mortgage.{{/subBroker}}
-                    {{Broker}}Interbridge Mortgages Limited will pay |brokerName| £|brokerCommission| commission for arranging your mortgage with
-                    them. The broker fee is set out in section 4 below.{{/Broker}}
+                    {{subBroker}}<p>|subBrokerName|, |subBrokerStreet|, |subBrokerCity|, |subBrokerPostcode|,
+                        |subBrokerWeb|, |subBrokerEmail|, |subBrokerPhone| recommends, having assessed your needs and
+                        circumstances, that you take out this second charge mortgage, which will be processed and
+                        referred
+                        to the lender by |brokerName|.<br><br>Our fee is described in section 4. In addition, if the
+                        proposed second charge mortgage completed, Interbridge Mortgages Limited will pay |brokerName| a
+                        commission of £|brokerCommission| for arranging your second charge mortgage with them and
+                        |subBrokerName| will also benefit from this payment. We recommend, having assessed your needs
+                        and
+                        circumstances, that you take out this mortgage.</p>{{/subBroker}}
+                    {{Broker}}<p>Interbridge Mortgages Limited will pay |brokerName| £|brokerCommission| commission for
+                        arranging your mortgage with them. The broker fee is set out in section 4 below.</p>{{/Broker}}
                     <br>
                 </td>
             </tr>
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="3" type="1">
-                        <li><strong>Main features of the loan</strong></li>
-                    </ol>
+                    <b>3. Main features of the loan</b>
                 </th>
             </tr>
         </thead>
@@ -240,30 +235,33 @@
                     <p>Duration of the loan (months): |loanTermYYMM|</p>
                     <p>This is a capital repayment mortgage.</p>
                     {{Variable}}
-                    <p>It has a variable rate for the Term. The Interest Rate is |initialRate|% comprised of a margin of |margin| and Interbridge Mortgages Limited’s Reference Rate currently |referenceRate|%. The Reference Rate varies in accordance with changes made at the discretion of Interbridge Mortgages Limited. You will be notified of any change in the rate and the current rate is available at |imlWebsite|.</p>
+                    <p>It has a variable rate for the Term. The Interest Rate is |initialRate|% comprised of a margin of
+                        |margin| and Interbridge Mortgages Limited’s Reference Rate currently |referenceRate|%. The
+                        Reference Rate varies in accordance with changes made at the discretion of Interbridge Mortgages
+                        Limited. You will be notified of any change in the rate and the current rate is available at
+                        |imlWebsite|.</p>
                     {{/Variable}}
                     <p>Total amount to be repaid: £|totalAmountRepayable|</p>
                     <p>This means that you will pay back £|costOfCredit| for every £1 borrowed.</p>
-                    <p><strong>The amount shown here is for illustration purposes only. A variation in the interest rate
-                            will lead to a change in the total amount to be repaid.</strong></p>
+                    <p><b>The amount shown here is for illustration purposes only. A variation in the interest rate
+                            will lead to a change in the total amount to be repaid.</b></p>
                     <p>Please refer to the Lender for further details.</p>
                     <p>Value of the Property assumed to prepare this information sheet: £|valuation|</p>
                     <p>Minimum value of the Property required to borrow the illustrated amount: £|minValuation|</p>
                     <p>The loan will be secured by a second charge, or where the Property is located in Scotland a
-                        second ranking standard security, against the Property address as follows:<br>|securityAddress|
+                        second ranking standard security, against the Property address as
+                        follows:<br><br>|securityAddress|.
                     </p>
                 </td>
             </tr>
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="4" type="1">
-                        <li><strong>Interest rate and other costs</strong></li>
-                    </ol>
+                    <b>4. Interest rate and other costs</b>
                 </th>
             </tr>
         </thead>
@@ -272,50 +270,50 @@
                 <td>
                     <p>The annual percentage rate of charge (APRC) is the total cost of the loan expressed as an annual
                         percentage. The APRC is provided to help you compare different offers.</p>
-                    <p>The APRC applicable to your loan is |aprc|%. This is based on the following assumptions: We
-                        assume any variable rate remains at the interest rate shown above and that any estimated fees
-                        remain unchanged.</p>
+                    <p>The APRC applicable to your loan is |aprc|%. This is based on the following assumptions: We asume
+                        any variable rate remains at the interest rate shown above and that any estimated fees remain
+                        unchanged.</p>
                     <p>It comprises:</p>
-                    <p><strong>Interest rate</strong></p>
-                    <p><strong>Other components of the APRC</strong></p>
-                    <p><strong>Costs to be paid on a one-off basis</strong></p>
-                    <table width="70%">
+                    <p><b>Interest rate</b></p>
+                    <p><b>Other components of the APRC</b></p>
+                    <p><b>Costs to be paid on a one-off basis</b></p>
+                    <table style="width:100%;">
                         <tbody>
                             <tr>
-                                <td>Lender Fee</td>
-                                <td>Added to Loan : |lenderFeeAdded|</td>
-                                <td>£|lenderFee|</td>
+                                <td style="width:50%;">Lender Fee</td>
+                                <td style="width:35%;">Added to Loan : |lenderFeeAdded|</td>
+                                <td style="width:15%;">£|lenderFee|</td>
                             </tr>
                             <tr>
-                                <td>Broker fee</td>
-                                <td>Added to Loan : |brokerFeeAdded|</td>
-                                <td>£|brokerFee|</td>
+                                <td style="width:50%;">Broker fee</td>
+                                <td style="width:35%;">Added to Loan : |brokerFeeAdded|</td>
+                                <td style="width:15%;">£|brokerFee|</td>
                             </tr>
                             <tr>
-                                <td>Application Fee</td>
-                                <td>Added to Loan : |applicationFeeAdded|</td>
-                                <td>£|applicationFee|</td>
+                                <td style="width:50%;">Application Fee</td>
+                                <td style="width:35%;">Added to Loan : |applicationFeeAdded|</td>
+                                <td style="width:15%;">£|applicationFee|</td>
                             </tr>
                             <tr>
-                                <td>Advice Fee</td>
-                                <td>Added to Loan : |adviceFeeAdded|</td>
-                                <td>£|adviceFee|</td>
+                                <td style="width:50%;">Advice Fee</td>
+                                <td style="width:35%;">Added to Loan : |adviceFeeAdded|</td>
+                                <td style="width:15%;">£|adviceFee|</td>
                             </tr>
                             <tr>
-                                <td>Valuation Fee</td>
-                                <td>Added to Loan : |valuationFeeAdded|</td>
-                                <td>£|valuationFee|</td>
+                                <td style="width:50%;">Valuation Fee</td>
+                                <td style="width:35%;">Added to Loan : |valuationFeeAdded|</td>
+                                <td style="width:15%;">£|valuationFee|</td>
                             </tr>
                             <tr>
-                                <td>Other Fee:<br>|otherFeeDescription|</td>
-                                <td>Added to Loan : |otherFeeAdded|</td>
-                                <td>£|otherFee|</td>
+                                <td style="width:50%;">Other Fee: |otherFeeDescription|</td>
+                                <td style="width:35%;">Added to Loan : |otherFeeAdded|</td>
+                                <td style="width:15%;">£|otherFee|</td>
                             </tr>
                             <tr>
-                                <td>Lender Second Charge or where the Property is located in Scotland a second ranking
-                                    standard security Mortgage Exit Fee.</td>
-                                <td></td>
-                                <td>£95.00*</td>
+                                <td style="width:50%;">Lender Second Charge or where the Property is located in Scotland
+                                    a second ranking standard security Mortgage Exit Fee.</td>
+                                <td style="width:35%;"></td>
+                                <td style="width:15%;">£95.00*</td>
                             </tr>
                             {{Scotland}}
                             <tr>
@@ -333,34 +331,32 @@
                         if the second charge mortgage is redeemed early.'</p>
                     <p>*This fee is variable and may change in accordance with the Mortgage Conditions referred to in
                         section 13.</p>
-                    <p><strong>Costs to be paid regularly</strong>: None</p>
-                    <p><strong>The following costs are not known to the Lender and are therefore not included in the
-                            APRC:</strong></p>
-                    <table width="100%">
+                    <p><b>Costs to be paid regularly</b>: None</p>
+                    <p><b>The following costs are not known to the Lender and are therefore not included in the
+                            APRC:</b></p>
+                    <table style="width:100%;">
                         <tbody>
                             <tr>
                                 <td>Legal fees</td>
                             </tr>
                         </tbody>
                     </table>
-                    <p><strong>The APRC is calculated using assumptions regarding the Interest Rate.</strong></p>
-                    <p><strong>Because the loan is a variable interest rate loan, the actual APRC could be different
-                            from this APRC if the Interest Rate for your loan changes.</strong></p>
-                    <p><strong></strong>For example, if the Interest Rate rose to |interestRateIllustrationIncrease|%
-                        the APRC could increase to |aprcIllustrationIncrease|%. </strong></p>
+                    <p><b>The APRC is calculated using assumptions regarding the Interest Rate.</b></p>
+                    <p><b>Because the loan is a variable interest rate loan, the actual APRC could be different from
+                            this APRC if the Interest Rate for your loan changes.</b></p>
+                    <p>For example, if the Interest Rate rose to |interestRateIllustrationIncrease|% the APRC could
+                        increase to |aprcIllustrationIncrease|%. </b></p>
                     <p>Please make sure that you are aware of all other taxes and costs associated with your loan.</p>
                 </td>
             </tr>
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="5" type="1">
-                        <li><strong>Frequency and number of payments</strong></li>
-                    </ol>
+                    <b>5. Frequency and number of payments</b>
                 </th>
             </tr>
         </thead>
@@ -374,13 +370,11 @@
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="6" type="1">
-                        <li><strong>Amount of each instalment</strong></li>
-                    </ol>
+                    <b></b>6. Amount of each instalment</b>
                 </th>
             </tr>
         </thead>
@@ -388,24 +382,22 @@
             <tr>
                 <td>
                     <p>All payments must be made in pound sterling.</p>
-                    <p><strong>Your income may change. Please consider whether you will still be able to afford your
-                            monthly repayment instalments if your income falls.</strong></p>
-                    <p><strong>The Interest Rate on this loan can change. This means the amount of your instalments
+                    <p><b>Your income may change. Please consider whether you will still be able to afford your
+                            monthly repayment instalments if your income falls.</b></p>
+                    <p><b>The Interest Rate on this loan can change. This means the amount of your instalments
                             could increase or decrease. For example, if the Interest Rate rose to
                             |interestRateIllustrationIncrease|%, your payments could increase to
-                            £|paymentsIllustrationIncrease|. </strong></p>
+                            £|paymentsIllustrationIncrease|. </b></p>
                 </td>
             </tr>
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="7" type="1">
-                        <li><strong>Additional obligations</strong></li>
-                    </ol>
+                    <b>7. Additional obligations</b>
                 </th>
             </tr>
         </thead>
@@ -430,13 +422,11 @@
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="8" type="1">
-                        <li><strong>Early repayment</strong></li>
-                    </ol>
+                    <b>8. Early repayment</b>
                 </th>
             </tr>
         </thead>
@@ -445,12 +435,12 @@
                 <td>
                     <p>You have the right to repay this loan early, either fully or partially. However an Early
                         Repayment Charge may apply if you repay the Loan in full early.</p>
-                    <p><strong>Early Repayment Charge</strong></p>
-                    <table width="50%">
+                    <p><b>Early Repayment Charge</b></p>
+                    <table style="width:50%;">
                         <thead>
                             <tr>
-                                <th><strong>Basis of the charge</strong></th>
-                                <th><strong>Date applicable</strong></th>
+                                <th><b>Basis of the charge</b></th>
+                                <th><b>Date applicable</b></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -484,41 +474,37 @@
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="9" type="1">
-                        <li><strong>Flexible features</strong></li>
-                    </ol>
+                    <b>9. Flexible features</b>
                 </th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>
-                    <p><strong>Portability</strong></p>
+                    <p><b>Portability</b></p>
                     <p>You do not have the possibility to (the right to) transfer this loan to another lender or
                         property.</p>
-                    <p><strong>Additional features:</strong></p>
-                    <p><strong>Overpayments</strong></p>
+                    <p><b>Additional features:</b></p>
+                    <p><b>Overpayments</b></p>
                     <p>You can make Overpayments at any time. You should always contact us before making any
                         Overpayments so that we can provide guidance on how, considering your circumstances, the payment
                         can be best applied to give you the most benefit.</p>
-                    <p><strong>Underpayments</strong></p>
+                    <p><b>Underpayments</b></p>
                     <p>Underpayments are not accepted as a flexible feature of your Loan.</p>
                 </td>
             </tr>
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="10" type="1">
-                        <li><strong>Other rights of the Borrower</strong></li>
-                    </ol>
+                    <b>10. Other rights of the Borrower</b>
                 </th>
             </tr>
         </thead>
@@ -536,13 +522,11 @@
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="11" type="1">
-                        <li><strong>Complaints</strong></li>
-                    </ol>
+                    <b>11. Complaints</b>
                 </th>
             </tr>
         </thead>
@@ -564,14 +548,11 @@
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="12" type="1">
-                        <li><strong>Non-compliance with the commitments linked to the loan: consequences for the
-                                Borrower</strong></li>
-                    </ol>
+                    <b>12. Non-compliance with the commitments linked to the loan: consequences for the Borrower</b>
                 </th>
             </tr>
         </thead>
@@ -615,20 +596,18 @@
                         to credit reference agencies which may impact on your ability to take out further loans.</p>
                     <p>Should you encounter difficulties in making your Monthly Payments, please contact us straight
                         away to explore possible solutions.</p>
-                    <p><strong>As a last resort, your home may be repossessed if you do not keep up with
-                            payments.</strong></p>
+                    <p><b>As a last resort, your home may be repossessed if you do not keep up with
+                            payments.</b></p>
                 </td>
             </tr>
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="13" type="1">
-                        <li><strong>Additional information</strong></li>
-                    </ol>
+                    <b>13. Additional information</b>
                 </th>
             </tr>
         </thead>
@@ -646,13 +625,11 @@
         </tbody>
     </table>
     <br>
-    <table width="100%">
+    <table style="width:100%;">
         <thead>
             <tr>
                 <th>
-                    <ol start="14" type="1">
-                        <li><strong>Supervisor</strong></li>
-                    </ol>
+                    <b>14. Supervisor</b>
                 </th>
             </tr>
         </thead>
