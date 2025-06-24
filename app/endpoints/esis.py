@@ -22,7 +22,7 @@ class Payload(BaseModel):
     brokerPostcode: str
     brokerEmail: str
     brokerWeb: str
-    brokerCommission: float
+    brokerCommission: str
     subBroker: bool
     subBrokerName: Optional[str] = ""
     subBrokerPhone: Optional[str] = ""
@@ -33,9 +33,9 @@ class Payload(BaseModel):
     subBrokerEmail: Optional[str] = ""
     subBrokerWeb: Optional[str] = ""
     advance: str
-    initialRate: float
-    margin: float
-    referenceRate: float
+    initialRate: str
+    margin: str
+    referenceRate: str
     aprc: str
     loanType: str #FixedTerm, FixedReversion, Variable
     feesAdded: str
@@ -78,80 +78,47 @@ class Payload(BaseModel):
 
 
 #-------------------------------------------------------------------------
-# Single routine to remove any block & delimiters - TO TEST
+# Single routine to remove any block & delimiters
 def remove_block(text, delimiter):
-    pattern = fr'\b{delimiter}\b.*?\/b{delimiter}\b'
-    new_block = re.sub(pattern, '', text, flags=re.DOTALL)
-    new_block2 = re.sub(delimiter, '', new_block, flags=re.DOTALL)
-    return re.sub('/' + delimiter, '', new_block2, flags=re.DOTALL)
+    pattern = fr'{{{{{delimiter}}}}}.*?{{{{\/{delimiter}}}}}' # fstring brackets need to be doubled to escape them
+    return re.sub(pattern, '', text, flags=re.DOTALL)
+
+
+# Routine to remove delimiters from blocks that are remaining
+def strip_delimiters(pattern, text):
+    interim_text = re.sub('{{' + pattern + '}}', '', text, flags=re.DOTALL)
+    return re.sub('{{/' + pattern + '}}', '', interim_text, flags=re.DOTALL)
 
 
 # Routine to evaluate expression-based condition in HTML template - TO TEST
 # looks for [[CONDITION::expression_to_evaluate]]{{tag}}content to display{{/tag}}
-# where expression_to_evaluate is somethine like subBroker=TRUE or scotland=TRUE
+# where expression_to_evaluate is something like subBroker=TRUE or scotland=TRUE
 # and tag is something like {{scotland}}scottish content{{/scotland}}
-import re
-
-def render_conditional_html(html, context):
-    pattern = re.compile(
-        r'\[\[CONDITION::(.*?)\]\]\s*\{\{(\w+)\}\}(.*?)\{\{/\2\}\}',
-        re.DOTALL
-    )
-    
-    result = html
-    
-    for match in pattern.finditer(html):
-        expression, tag, content = match.groups()
-        full_block = match.group(0)
-        
-        try:
-            # Safely evaluate the expression using context
-            condition_result = eval(expression.strip(), {}, context)
-            if bool(condition_result):
-                result = result.replace(full_block, content)
-            else:
-                result = result.replace(full_block, '')
-        except Exception as e:
-            print(f"Error in condition '{expression}': {e}")
-            result = result.replace(full_block, '')  # Remove on failure
-    
-    return result
+#def render_conditional_html(html, context):
+#    pattern = re.compile(
+#        r'\[\[CONDITION::(.*?)\]\]\s*\{\{(\w+)\}\}(.*?)\{\{/\2\}\}',
+#        re.DOTALL
+#    )
+#    
+#    result = html
+#    
+#    for match in pattern.finditer(html):
+#        expression, tag, content = match.groups()
+#        full_block = match.group(0)
+#        
+#        try:
+#            # Safely evaluate the expression using context
+#            condition_result = eval(expression.strip(), {}, context)
+#            if bool(condition_result):
+#                result = result.replace(full_block, content)
+#            else:
+#                result = result.replace(full_block, '')
+#        except Exception as e:
+#            print(f"Error in condition '{expression}': {e}")
+#            result = result.replace(full_block, '')  # Remove on failure
+#    
+#    return result
 #-------------------------------------------------------------------------
-
-
-# Define routines to strip out conditional blocks that are not required
-def remove_variable_rate_blocks(text):
-    pattern = r'\{\{VariableRate\}\}.*?\{\{\/VariableRate\}\}'
-    return re.sub(pattern, '', text, flags=re.DOTALL)
-
-
-def remove_fixed_term_blocks(text):
-    pattern = r'\{\{FixedTerm\}\}.*?\{\{\/FixedTerm\}\}'
-    return re.sub(pattern, '', text, flags=re.DOTALL)
-
-
-def remove_fixed_reversion_blocks(text):
-    pattern = r'\{\{FixedReversion\}\}.*?\{\{\/FixedReversion\}\}'
-    return re.sub(pattern, '', text, flags=re.DOTALL)
-
-
-def remove_broker(text):
-    pattern = r'\{\{Broker\}\}.*?\{\{\/Broker\}\}'
-    return re.sub(pattern, '', text, flags=re.DOTALL)
-
-
-def remove_sub_broker(text):
-    pattern = r'\{\{subBroker\}\}.*?\{\{\/subBroker\}\}'
-    return re.sub(pattern, '', text, flags=re.DOTALL)
-
-def remove_scotland(text):
-    pattern = r'\{\{scotland\}\}.*?\{\{\/scotland\}\}'
-    return re.sub(pattern, '', text, flags=re.DOTALL)
-
-
-def strip_delimiters(pattern1, pattern2, text):
-    interim_text = re.sub(pattern1, '', text, flags=re.DOTALL)
-    return re.sub(pattern2, '', interim_text, flags=re.DOTALL)
 
 
 router = APIRouter(
@@ -174,34 +141,30 @@ async def generate_esis(payload: Payload):
 
     try:
         # Get the preloaded template
-        esis_template = templates.get("esis")
+        esis = templates.get("esis")
 
         # Deal with subBroker conditional statement
         if not payload.subBroker:
-            esis_step1 = remove_sub_broker(esis)
-            esis = strip_delimiters("{{subBroker}}","{{/subBroker}}",esis_step1)
+            esis = remove_block(esis,"subBroker")
+            esis = strip_delimiters("Broker", esis)
         else:
-            esis_step1 = remove_broker(esis)
-            esis = strip_delimiters("{{Broker}}","{{/Broker}}",esis_step1)
+            esis = remove_block(esis,"Broker")
+            esis = strip_delimiters("subBroker", esis)
 
         # Deal with Scottish conditional statement
         if not payload.scotland:
-            esis_step1 = remove_scotland(esis)
-            esis = strip_delimiters("{{scotland}}","{{/scotland}}",esis_step1)
+            esis = remove_block(esis,"Scotland")
         
         # Deal with loanType conditional statements
         if payload.loanType == "FixedTerm":
-            esis_step1 = remove_variable_rate_blocks(esis_template)
-            esis_step2 = remove_fixed_reversion_blocks(esis_step1)
-            esis = strip_delimiters("{{FixedTerm}}","{{/FixedTerm}}",esis_step2)
+            esis_step1 = remove_block(esis,"Variable")
+            esis = remove_block(esis_step1,"FixedReversion")
         elif payload.loanType == "FixedReversion":
-            esis_step1 = remove_variable_rate_blocks(esis_template)
-            esis_step2 = remove_fixed_term_blocks(esis_step1)
-            esis = strip_delimiters("{{FixedReversion}}","{{/FixedReversion}}",esis_step2)
+            esis_step1 = remove_block(esis,"FixedTerm")
+            esis = remove_block(esis_step1,"Variable")
         else: # assume variable
-            esis_step1 = remove_fixed_reversion_blocks(esis_template)
-            esis_step2 = remove_fixed_term_blocks(esis_step1)
-            esis = strip_delimiters("{{Variable}}","{{/Variable}}",esis_step2)
+            esis_step1 = remove_block(esis,"FixedTerm")
+            esis = remove_block(esis_step1,"FixedReversion")
 
         # Substitute variables
         variables = {
